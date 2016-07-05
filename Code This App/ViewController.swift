@@ -12,14 +12,10 @@ class ViewController: UIViewController {
 
     @IBOutlet var console: UITextView!
     
-    var textCounter = 0
-    var timer:NSTimer?
-    
-    let INTERVAL = 0.1
     let LINE_DELAY = 0.5
     
     let commands = [
-        ".FOCUS": #selector(ViewController.focusConsole)
+        ".FOCUS": #selector(ViewController.focusConsole(_:))
     ]
     
     override func viewDidLoad() {
@@ -39,39 +35,40 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func printArray(array: [String]) {
+    func printArray(array: [String], params: Dictionary<String, AnyObject>? = nil) {
+        if array.count == 0 {
+            return
+        }
         var delay = 0.0
-        for string in array {
-            delay += Double(LINE_DELAY)
-            printLine(string, delay: delay)
-            delay += Double(string.characters.count) * INTERVAL
-        }
+        delay += Double(LINE_DELAY)
+        printLine(array[0], delay: delay, completion: { (response) in
+            var tempArray = array
+            tempArray.removeFirst()
+            self.printArray(tempArray, params: response)
+        })
     }
     
-    func printLine(text: String, delay: Double) {
-        NSTimer.scheduledTimerWithTimeInterval(delay, target: self, selector: #selector(ViewController.typeLetter), userInfo: ["text": text + "\n"], repeats: false)
-    }
-    
-    func typeLetter(timer: NSTimer) {
-        let text: String = timer.userInfo!["text"] as! String
-        var textArray = text.characters.map { String($0) }
-        if(commands[text.stringByReplacingOccurrencesOfString("\n", withString: "")] != nil) {
-            self.performSelector(commands[text.stringByReplacingOccurrencesOfString("\n", withString: "")]!)
+    func printLine(text: String, delay: Double, completion: (Dictionary<String, AnyObject>?) -> Void) {
+        if (commands[text] != nil) {
+//            self.performSelector(commands[text]!)
+//            self.performSelector(commands[text]!, withObject: completion)
             return
+        } else {
+            console.text.appendContentsOf(text + "\n")
+            
+            let time = Double(NSEC_PER_SEC) * delay
+            
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(time)), dispatch_get_main_queue()) {
+                completion(nil)
+            }
         }
+    }
+    
+    func invokeCompletion() {
         
-        if(textArray.count == 0) {
-            timer.invalidate()
-            return
-        }
-        console.text = console.text! + String(textArray[0])
-        let randomInterval = 0.1//Double((arc4random_uniform(8)+1))/20
-        timer.invalidate()
-        textArray.removeFirst()
-        NSTimer.scheduledTimerWithTimeInterval(randomInterval, target: self, selector: #selector(ViewController.typeLetter), userInfo: ["text": textArray.joinWithSeparator("")], repeats: false)
     }
     
-    func focusConsole() {
+    func focusConsole(completion: (Dictionary<String, AnyObject>?) -> Void) {
         console.becomeFirstResponder()
     }
 
