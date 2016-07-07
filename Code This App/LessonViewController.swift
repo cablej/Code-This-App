@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  LessonViewController.swift
 //  Code This App
 //
 //  Created by Jack Cable on 7/3/16.
@@ -8,26 +8,22 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class LessonViewController: UIViewController {
 
     @IBOutlet var console: UITextView!
     
+    var items = []
     let LINE_DELAY = 0.5
     
     let commands = [
-        ".FOCUS": #selector(ViewController.focusConsole(_:))
+        ".FOCUS": #selector(focusConsole),
+        ".PROMPT": #selector(focusConsole),
     ]
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        printArray([
-            "*Yawwwwwn*",
-            "What a lovely-- Ah, hi there!",
-            "I almost didn't see you.",
-            "So, anyways, what's your name?",
-            ".FOCUS"
-        ])
+        self.navigationController?.hidesBarsOnTap = true
+        self.navigationController?.hidesBarsOnSwipe = true
     }
 
     override func didReceiveMemoryWarning() {
@@ -49,26 +45,29 @@ class ViewController: UIViewController {
     }
     
     func printLine(text: String, delay: Double, completion: (Dictionary<String, AnyObject>?) -> Void) {
-        if (commands[text] != nil) {
-//            self.performSelector(commands[text]!)
-//            self.performSelector(commands[text]!, withObject: completion)
-            return
-        } else {
-            console.text.appendContentsOf(text + "\n")
-            
-            let time = Double(NSEC_PER_SEC) * delay
-            
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(time)), dispatch_get_main_queue()) {
-                completion(nil)
+        var shouldReturn = false;
+        commands.forEach { (command) in
+            if(text.containsString(command.0)) {
+                self.performSelector(command.1)
+                shouldReturn = true
+                return
             }
+        }
+        if(shouldReturn) { return }
+
+        console.text.appendContentsOf(text + "\n")
+        
+        let time = Double(NSEC_PER_SEC) * delay
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(time)), dispatch_get_main_queue()) {
+            completion(nil)
         }
     }
     
-    func invokeCompletion() {
-        
-    }
-    
-    func focusConsole(completion: (Dictionary<String, AnyObject>?) -> Void) {
+    func focusConsole() {
+//        guard let completion = params["completion"] as? (Dictionary<String, AnyObject>?) -> Void) else {
+//            return
+//        }
         console.becomeFirstResponder()
     }
 
