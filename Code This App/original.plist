@@ -6,8 +6,9 @@
 		<key>items</key>
 		<array>
 			<string>Hello!</string>
+			<string>Welcome to [Code this App]</string>
 			<string>What&apos;s your name?</string>
-			<string>.PROMPT{name}</string>
+			<string>.PROMPT{Type your name, and press return.}{name}</string>
 		</array>
 		<key>name</key>
 		<string>Introduction</string>

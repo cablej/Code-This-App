@@ -12,11 +12,18 @@ class LessonViewController: UIViewController {
 
     @IBOutlet var console: UITextView!
     
+    let LINE_DELAY = 1.5
     var items = []
-    let LINE_DELAY = 0.5
+    
+    var dataToStore = [
+        "data": Dictionary<String, AnyObject>(),
+        "code": Dictionary<String, AnyObject>()
+    ]
+    
+    var currentCompletion: Any?;
     
     let commands = [
-        ".FOCUS": #selector(focusConsole),
+        ".FOCUS": #selector(focusConsole:),
         ".PROMPT": #selector(focusConsole),
     ]
     
@@ -24,6 +31,8 @@ class LessonViewController: UIViewController {
         super.viewDidLoad()
         self.navigationController?.hidesBarsOnTap = true
         self.navigationController?.hidesBarsOnSwipe = true
+        
+        printArray(items as! [String])
     }
 
     override func didReceiveMemoryWarning() {
@@ -38,6 +47,7 @@ class LessonViewController: UIViewController {
         var delay = 0.0
         delay += Double(LINE_DELAY)
         printLine(array[0], delay: delay, completion: { (response) in
+            print(response)
             var tempArray = array
             tempArray.removeFirst()
             self.printArray(tempArray, params: response)
@@ -45,9 +55,13 @@ class LessonViewController: UIViewController {
     }
     
     func printLine(text: String, delay: Double, completion: (Dictionary<String, AnyObject>?) -> Void) {
+        let params = matchesForRegexInText(text)
+        print(params)
+        
         var shouldReturn = false;
         commands.forEach { (command) in
             if(text.containsString(command.0)) {
+                currentCompletion = completion
                 self.performSelector(command.1)
                 shouldReturn = true
                 return
@@ -64,11 +78,34 @@ class LessonViewController: UIViewController {
         }
     }
     
-    func focusConsole() {
-//        guard let completion = params["completion"] as? (Dictionary<String, AnyObject>?) -> Void) else {
-//            return
-//        }
+    func focusConsole(params: [String]) {
+        guard let completion = currentCompletion as? ((Dictionary<String, AnyObject>?) -> Void) else {
+            return
+        }
+        completion(["text": "name"])
         console.becomeFirstResponder()
+    }
+
+    func inputString(prompt: String) {
+        
+    }
+    
+    func matchesForRegexInText(text: String!) -> [String] {
+        let regex = "\\{(.*?)\\}"
+        do {
+            let regex = try NSRegularExpression(pattern: regex, options: [])
+            let nsString = text as NSString
+            
+            let results = regex.matchesInString(text,
+                                                options: [], range: NSMakeRange(0, nsString.length))
+            return results.map { nsString.substringWithRange($0.range).stringByReplacingOccurrencesOfString("{", withString: "").stringByReplacingOccurrencesOfString("}", withString: "")}
+            
+        } catch let error as NSError {
+            
+            print("invalid regex: \(error.localizedDescription)")
+            
+            return []
+        }
     }
 
 }

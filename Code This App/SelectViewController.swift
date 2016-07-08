@@ -28,7 +28,7 @@ class SelectViewController: UIViewController, UICollectionViewDelegate, UICollec
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("LessonCell", forIndexPath: indexPath) as! LessonCell
-        guard let lesson = lessons[indexPath.row] as? NSDictionary, let name = lesson["name"] as? String, let items = lesson["items"] as? [String] else {
+        guard let lesson = lessons[indexPath.row] as? NSDictionary, let name = lesson["name"] as? String else {
             return cell
         }
         cell.nameLabel.text = name
@@ -45,7 +45,13 @@ class SelectViewController: UIViewController, UICollectionViewDelegate, UICollec
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        
+        if let vc = segue.destinationViewController as? LessonViewController {
+            let selectedRow = (collectionView.indexPathsForSelectedItems()?.first!.row)!
+            guard let lesson = lessons[selectedRow] as? NSDictionary, let items = lesson["items"] as? [String] else {
+                return
+            }
+            vc.items = items
+        }
     }
 
 }
