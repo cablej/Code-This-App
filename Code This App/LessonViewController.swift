@@ -8,11 +8,11 @@
 
 import UIKit
 
-class LessonViewController: UIViewController {
+class LessonViewController: UIViewController, UITextViewDelegate {
 
     @IBOutlet var console: UITextView!
     
-    let LINE_DELAY = 1.5
+    let LINE_DELAY = 0.5
     var items = []
     
     var dataToStore = [
@@ -20,17 +20,19 @@ class LessonViewController: UIViewController {
         "code": Dictionary<String, AnyObject>()
     ]
     
-    var currentCompletion: Any?;
+    var currentCompletion: Any?
+    var actionEvent: Any?
     
     let commands = [
-        ".FOCUS": #selector(focusConsole:),
-        ".PROMPT": #selector(focusConsole),
+        ".PROMPT": #selector(inputString(_:)),
     ]
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.hidesBarsOnTap = true
         self.navigationController?.hidesBarsOnSwipe = true
+        
+        console.delegate = self
         
         printArray(items as! [String])
     }
@@ -47,7 +49,10 @@ class LessonViewController: UIViewController {
         var delay = 0.0
         delay += Double(LINE_DELAY)
         printLine(array[0], delay: delay, completion: { (response) in
-            print(response)
+            if let response = response {
+                self.dataToStore["data"]! += response
+            }
+            print(self.dataToStore)
             var tempArray = array
             tempArray.removeFirst()
             self.printArray(tempArray, params: response)
@@ -56,13 +61,11 @@ class LessonViewController: UIViewController {
     
     func printLine(text: String, delay: Double, completion: (Dictionary<String, AnyObject>?) -> Void) {
         let params = matchesForRegexInText(text)
-        print(params)
-        
         var shouldReturn = false;
         commands.forEach { (command) in
             if(text.containsString(command.0)) {
                 currentCompletion = completion
-                self.performSelector(command.1)
+                self.performSelector(command.1, withObject: params)
                 shouldReturn = true
                 return
             }
@@ -78,16 +81,33 @@ class LessonViewController: UIViewController {
         }
     }
     
-    func focusConsole(params: [String]) {
+    func inputString(params: [String]) {
         guard let completion = currentCompletion as? ((Dictionary<String, AnyObject>?) -> Void) else {
             return
         }
-        completion(["text": "name"])
+        console.text.appendContentsOf(params[0])
         console.becomeFirstResponder()
+        let beforeText = console.text
+        actionEvent = { () in
+            let inputText = self.console.text.stringByReplacingOccurrencesOfString(beforeText, withString: "")
+            self.console.text.appendContentsOf("\n")
+            self.currentCompletion = nil
+            completion([params[1]: inputText])
+        }
     }
-
-    func inputString(prompt: String) {
-        
+    
+    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+        if textView == console {
+            if text == "\n" {
+                textView.resignFirstResponder()
+                if let action = actionEvent as? (() -> Void) {
+                    actionEvent = nil
+                    action()
+                }
+                return false
+            }
+        }
+        return true
     }
     
     func matchesForRegexInText(text: String!) -> [String] {
@@ -110,3 +130,8 @@ class LessonViewController: UIViewController {
 
 }
 
+func += <KeyType, ValueType> (inout left: [KeyType:ValueType], right: [KeyType:ValueType]) {
+    for (k, v) in right {
+        left.updateValue(v, forKey: k)
+    }
+}
