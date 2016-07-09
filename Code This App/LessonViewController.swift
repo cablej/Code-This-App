@@ -7,21 +7,25 @@
 //
 
 import UIKit
+import JavaScriptCore
 
 class LessonViewController: UIViewController, UITextViewDelegate {
 
     @IBOutlet var console: UITextView!
+    @IBOutlet var codeView: UITextView!
     
     let LINE_DELAY = 0.5
     var items = []
+    
+    let context = JSContext()
+    
+    var currentCompletion: Any?
+    var actionEvent: Any?
     
     var dataToStore = [
         "data": Dictionary<String, AnyObject>(),
         "code": Dictionary<String, AnyObject>()
     ]
-    
-    var currentCompletion: Any?
-    var actionEvent: Any?
     
     let commands = [
         ".PROMPT": #selector(inputString(_:)),
@@ -34,12 +38,32 @@ class LessonViewController: UIViewController, UITextViewDelegate {
         
         console.delegate = self
         
+        initializeContext()
+        
         printArray(items as! [String])
     }
+    
+    func initializeContext() {
+        context.evaluateScript("var console = { log: function(message) { _consoleLog(message) } }")
+        let consoleLog: @convention(block) String -> Void = { message in
+            self.console.text.appendContentsOf("[Log]: \(message)\n")
+        }
+        context.setObject(unsafeBitCast(consoleLog, AnyObject.self), forKeyedSubscript: "_consoleLog")
+        
+        let readline: @convention(block) String -> String = { message in
+            self.console.text.appendContentsOf("[Input]: \(message)\n")
+            return "5"
+        }
+        context.setObject(unsafeBitCast(readline, AnyObject.self), forKeyedSubscript: "readline")
+        
+        context.exceptionHandler = { (context, exception) in
+            self.console.text.appendContentsOf("[Error]: \(exception)\n")
+        }
+    }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    @IBAction func onRunButtonTapped(sender: AnyObject) {
+        context.evaluateScript(codeView.text)
     }
     
     func printArray(array: [String], params: Dictionary<String, AnyObject>? = nil) {
@@ -60,10 +84,11 @@ class LessonViewController: UIViewController, UITextViewDelegate {
     }
     
     func printLine(text: String, delay: Double, completion: (Dictionary<String, AnyObject>?) -> Void) {
-        let params = matchesForRegexInText(text)
+        var text = text
         var shouldReturn = false;
         commands.forEach { (command) in
             if(text.containsString(command.0)) {
+                let params = matchesForRegexInText(text)
                 currentCompletion = completion
                 self.performSelector(command.1, withObject: params)
                 shouldReturn = true
@@ -71,7 +96,11 @@ class LessonViewController: UIViewController, UITextViewDelegate {
             }
         }
         if(shouldReturn) { return }
-
+        
+        for (key, value) in dataToStore["data"]! {
+            text = text.stringByReplacingOccurrencesOfString("{\(key)}", withString: value as! String)
+        }
+        
         console.text.appendContentsOf(text + "\n")
         
         let time = Double(NSEC_PER_SEC) * delay

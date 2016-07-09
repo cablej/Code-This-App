@@ -18,7 +18,7 @@ class SelectViewController: UIViewController, UICollectionViewDelegate, UICollec
 
         collectionView.delegate = self
         collectionView.dataSource = self
-        self.navigationController?.setNavigationBarHidden(true, animated: false)
+//        self.navigationController?.setNavigationBarHidden(true, animated: false)
         loadLessons()
     }
 

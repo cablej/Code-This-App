@@ -10,7 +10,8 @@
 			<string>What&apos;s your name?</string>
 			<string>.PROMPT{Type your name, and press return: }{name}</string>
 			<string>Nice to meet you, {name}.</string>
-			<string>.PROMPT{Really... give me your name: }{name}</string>
+			<string>You might have noticed the text box on the right side. That&apos;s for your code.</string>
+			<string>Give it a try, type &apos;console.log(&quot;{name}&quot;)&apos; in.</string>
 		</array>
 		<key>name</key>
 		<string>Introduction</string>

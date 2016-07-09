@@ -123,10 +123,15 @@
                         </variation>
                     </view>
                     <navigationItem key="navigationItem" id="n1w-Mb-fUv">
-                        <barButtonItem key="rightBarButtonItem" systemItem="play" id="h7g-8F-1hS"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="play" id="h7g-8F-1hS">
+                            <connections>
+                                <action selector="onRunButtonTapped:" destination="BYZ-38-t0r" id="bBC-9h-Q4H"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>
+                        <outlet property="codeView" destination="BLx-x3-6yR" id="zGh-Yq-4sY"/>
                         <outlet property="console" destination="9j9-KY-mbd" id="vn3-Jp-iq2"/>
                     </connections>
                 </viewController>
