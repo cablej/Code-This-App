@@ -63,6 +63,17 @@ class LessonViewController: UIViewController, UITextViewDelegate {
         }
         context.setObject(unsafeBitCast(readline, AnyObject.self), forKeyedSubscript: "readline")
         
+        let alert: @convention(block) (String, JSValue) -> Void = { (message, callback) in
+            let alert = UIAlertController(title: "Alert", message: message, preferredStyle: .Alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: { (action) in
+                if(!callback.isUndefined) {
+                    callback.callWithArguments([])
+                }
+            }))
+            self.presentViewController(alert, animated: true, completion: nil)
+        }
+        context.setObject(unsafeBitCast(alert, AnyObject.self), forKeyedSubscript: "alert")
+        
         context.exceptionHandler = { (context, exception) in
             self.console.text.appendContentsOf("[Error]: \(exception)\n")
         }
