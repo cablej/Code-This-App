@@ -33,8 +33,8 @@ class LessonViewController: UIViewController, UITextViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.hidesBarsOnTap = true
-        self.navigationController?.hidesBarsOnSwipe = true
+//        self.navigationController?.hidesBarsOnTap = true
+//        self.navigationController?.hidesBarsOnSwipe = true
         
         console.delegate = self
         
@@ -50,9 +50,16 @@ class LessonViewController: UIViewController, UITextViewDelegate {
         }
         context.setObject(unsafeBitCast(consoleLog, AnyObject.self), forKeyedSubscript: "_consoleLog")
         
-        let readline: @convention(block) String -> String = { message in
+        let readline: @convention(block) (String, JSValue) -> Void = { (message, callback) in
             self.console.text.appendContentsOf("[Input]: \(message)\n")
-            return "5"
+            self.console.becomeFirstResponder()
+            let beforeText = self.console.text
+            self.actionEvent = { () in
+                let inputText = self.console.text.stringByReplacingOccurrencesOfString(beforeText, withString: "")
+                self.console.text.appendContentsOf("\n")
+                self.currentCompletion = nil
+                callback.callWithArguments([inputText])
+            }
         }
         context.setObject(unsafeBitCast(readline, AnyObject.self), forKeyedSubscript: "readline")
         
