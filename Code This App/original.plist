@@ -3,16 +3,24 @@
 <plist version="1.0">
 <array>
 	<dict>
-		<key>items</key>
-		<array>
-			<string>Hello!</string>
-			<string>Welcome to [Code this App]</string>
-			<string>What&apos;s your name?</string>
-			<string>.PROMPT{Type your name, and press return: }{name}</string>
-			<string>Nice to meet you, {name}.</string>
-			<string>You might have noticed the text box on the right side. That&apos;s for your code.</string>
-			<string>Give it a try, type &apos;console.log(&quot;{name}&quot;)&apos; in.</string>
-		</array>
+		<key>code</key>
+		<string>printArray([
+	&quot;Hello there!&quot;,
+	&quot;Welcome to Code this App.&quot;,
+	&quot;What&apos;s your name?&quot;,
+], function() {
+	readline(&quot;Enter your name&quot;, function(name) {
+		console.log(&quot;Nice to meet you, &quot; + name + &quot;!&quot;)
+		console.log(`Try typing &apos;console.log(${name})&apos;`)
+	})
+});
+</string>
+		<key>name</key>
+		<string>Introduction</string>
+	</dict>
+	<dict>
+		<key>code</key>
+		<string>console.log(new Date().getTime())</string>
 		<key>name</key>
 		<string>Introduction</string>
 	</dict>

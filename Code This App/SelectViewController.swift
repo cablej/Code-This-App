@@ -47,10 +47,10 @@ class SelectViewController: UIViewController, UICollectionViewDelegate, UICollec
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let vc = segue.destinationViewController as? LessonViewController {
             let selectedRow = (collectionView.indexPathsForSelectedItems()?.first!.row)!
-            guard let lesson = lessons[selectedRow] as? NSDictionary, let items = lesson["items"] as? [String] else {
+            guard let lesson = lessons[selectedRow] as? NSDictionary, let code = lesson["code"] as? String else {
                 return
             }
-            vc.items = items
+            vc.lessonCode = code
         }
     }
 
