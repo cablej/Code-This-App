@@ -4,17 +4,25 @@
 <array>
 	<dict>
 		<key>code</key>
-		<string>printArray([
+		<string>var name;
+
+printArray([
 	&quot;Hello there!&quot;,
 	&quot;Welcome to Code this App.&quot;,
 	&quot;What&apos;s your name?&quot;,
 ], function() {
-	readline(&quot;Enter your name&quot;, function(name) {
+	readline(&quot;Enter your name&quot;, function(nameGiven) {
+		name = nameGiven
 		console.log(&quot;Nice to meet you, &quot; + name + &quot;!&quot;)
-		console.log(`Try typing &apos;console.log(${name})&apos;`)
+		console.log(`Try typing &apos;console.log(&quot;${name}&quot;)&apos;, and then press the run button.`)
+		verifyOutput(name, &quot;Not quite! Did you run the correct code?&quot;, finishStepOne)
 	})
+
 });
-</string>
+
+function finishStepOne() {
+	console.log(&quot;Nice job!&quot;)
+}</string>
 		<key>name</key>
 		<string>Introduction</string>
 	</dict>

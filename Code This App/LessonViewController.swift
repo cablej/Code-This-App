@@ -19,22 +19,24 @@ class LessonViewController: UIViewController, UITextViewDelegate {
     
     let context = JSContext()
     
-    var printingCompletion: Any?
+    var printingCompletion: (() -> Void) = { () in
+        
+    }
     var currentCompletion: Any?
-    var actionEvent: Any?
+    var actionEvent: (() -> Void) = { () in
+        
+    }
     var actionEventType = ""
+    var verifyValue = ""
+    var verifyErrorMessage = ""
     enum EVENT_TYPES: String {
         case READ_INPUT = "ReadInput"
-        case VERIFY_CODE = "VerifyCode"
+        case VERIFY_OUTPUT = "VerifyOutput"
     }
     
     var dataToStore = [
         "data": Dictionary<String, AnyObject>(),
         "code": Dictionary<String, AnyObject>()
-    ]
-    
-    let commands = [
-        ".PROMPT": #selector(inputString(_:)),
     ]
     
     override func viewDidLoad() {
@@ -54,6 +56,15 @@ class LessonViewController: UIViewController, UITextViewDelegate {
         context.evaluateScript("var console = { log: function(message) { _consoleLog(message) } }")
         let consoleLog: @convention(block) String -> Void = { message in
             self.console.text.appendContentsOf("\(message)\n")
+            
+            if self.actionEventType == LessonViewController.EVENT_TYPES.VERIFY_OUTPUT.rawValue {
+                if message == self.verifyValue {
+                    self.actionEventType = ""
+                    self.actionEvent()
+                } else {
+                    self.console.text.appendContentsOf("\(self.verifyErrorMessage)")
+                }
+            }
         }
         context.setObject(unsafeBitCast(consoleLog, AnyObject.self), forKeyedSubscript: "_consoleLog")
         
@@ -61,6 +72,7 @@ class LessonViewController: UIViewController, UITextViewDelegate {
             self.console.text.appendContentsOf("[Input]: \(message)\n")
             self.console.becomeFirstResponder()
             let beforeText = self.console.text
+            self.actionEventType = EVENT_TYPES.READ_INPUT.rawValue
             self.actionEvent = { () in
                 let inputText = self.console.text.stringByReplacingOccurrencesOfString(beforeText, withString: "")
                 self.console.text.appendContentsOf("\n")
@@ -89,6 +101,17 @@ class LessonViewController: UIViewController, UITextViewDelegate {
         }
         context.setObject(unsafeBitCast(printArray, AnyObject.self), forKeyedSubscript: "printArray")
         
+        let verifyOutput: @convention(block) (String, String, JSValue) -> Void = { (value, errorMessage, callback) in
+            self.actionEventType = EVENT_TYPES.VERIFY_OUTPUT.rawValue
+            self.verifyValue = value;
+            self.verifyErrorMessage = errorMessage
+            
+            self.actionEvent = { () in
+                callback.callWithArguments([])
+            }
+        }
+        context.setObject(unsafeBitCast(verifyOutput, AnyObject.self), forKeyedSubscript: "verifyOutput")
+        
         context.exceptionHandler = { (context, exception) in
             self.console.text.appendContentsOf("[Error]: \(exception)\n")
         }
@@ -101,10 +124,7 @@ class LessonViewController: UIViewController, UITextViewDelegate {
     
     func printArray(array: [String], params: Dictionary<String, AnyObject>? = nil) {
         if array.count == 0 {
-            if let comp = printingCompletion as? (() -> Void) {
-                printingCompletion = nil
-                comp()
-            }
+            printingCompletion()
             return
         }
         var delay = 0.0
@@ -126,21 +146,6 @@ class LessonViewController: UIViewController, UITextViewDelegate {
         }
     }
     
-    func inputString(params: [String]) {
-        guard let completion = currentCompletion as? ((Dictionary<String, AnyObject>?) -> Void) else {
-            return
-        }
-        console.text.appendContentsOf(params[0])
-        console.becomeFirstResponder()
-        let beforeText = console.text
-        actionEvent = { () in
-            let inputText = self.console.text.stringByReplacingOccurrencesOfString(beforeText, withString: "")
-            self.console.text.appendContentsOf("\n")
-            self.currentCompletion = nil
-            completion([params[1]: inputText])
-        }
-    }
-    
     /*
      Manages detecting unput
      */
@@ -148,9 +153,9 @@ class LessonViewController: UIViewController, UITextViewDelegate {
         if textView == console {
             if text == "\n" {
                 textView.resignFirstResponder()
-                if let action = actionEvent as? (() -> Void) {
-                    actionEvent = nil
-                    action()
+                if actionEventType == EVENT_TYPES.READ_INPUT.rawValue {
+                    actionEventType = ""
+                    actionEvent()
                 }
                 return false
             }
