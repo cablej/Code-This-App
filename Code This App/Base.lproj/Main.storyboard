@@ -27,20 +27,20 @@
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="mb6-jX-nBK">
                                 <rect key="frame" x="0.0" y="98" width="600" height="354"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="2Ng-UA-EnD">
-                                    <size key="itemSize" width="100" height="100"/>
+                                    <size key="itemSize" width="200" height="100"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="LessonCell" id="6fC-5p-J7F" customClass="LessonCell" customModule="Code_This_App" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="200" height="100"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="200" height="100"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zg4-PT-eRr">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zg4-PT-eRr">
                                                     <rect key="frame" x="71" y="39" width="0.0" height="0.0"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -51,7 +51,9 @@
                                         </view>
                                         <constraints>
                                             <constraint firstItem="zg4-PT-eRr" firstAttribute="centerY" secondItem="6fC-5p-J7F" secondAttribute="centerY" id="Yga-Ne-DY4"/>
+                                            <constraint firstAttribute="trailingMargin" secondItem="zg4-PT-eRr" secondAttribute="trailing" id="bjm-w8-sXi"/>
                                             <constraint firstItem="zg4-PT-eRr" firstAttribute="centerX" secondItem="6fC-5p-J7F" secondAttribute="centerX" id="dUq-vH-uRB"/>
+                                            <constraint firstItem="zg4-PT-eRr" firstAttribute="leading" secondItem="6fC-5p-J7F" secondAttribute="leadingMargin" id="iWf-hw-239"/>
                                         </constraints>
                                         <connections>
                                             <outlet property="nameLabel" destination="zg4-PT-eRr" id="fFZ-lI-6tC"/>

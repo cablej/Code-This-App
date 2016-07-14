@@ -14,7 +14,7 @@ class LessonViewController: UIViewController, UITextViewDelegate {
     @IBOutlet var console: UITextView!
     @IBOutlet var codeView: UITextView!
     
-    let LINE_DELAY = 0.5
+    let LINE_DELAY = 1
     var lessonCode = ""
     
     let context = JSContext()

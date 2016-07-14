@@ -8,10 +8,10 @@
 
 printArray([
 	&quot;Hello there!&quot;,
-	&quot;Welcome to Code this App.&quot;,
+	&quot;Welcome to Code this App. I&apos;m Codie, your coding teacher.&quot;,
 	&quot;What&apos;s your name?&quot;,
 ], function() {
-	readline(&quot;Enter your name&quot;, function(nameGiven) {
+	readline(&quot;Enter your name, and press &apos;Enter&apos;:&quot;, function(nameGiven) {
 		name = nameGiven
 		console.log(&quot;Nice to meet you, &quot; + name + &quot;!&quot;)
 		console.log(`Try typing &apos;console.log(&quot;${name}&quot;)&apos;, and then press the run button.`)
@@ -21,16 +21,35 @@ printArray([
 });
 
 function finishStepOne() {
-	console.log(&quot;Nice job!&quot;)
+	console.log(&quot;Nice job! You&apos;ll be a master programmer in no time.&quot;)
+	console.log(&quot;Try printing out another message between the quotes. When you&apos;re done, return to the menu and go onto the next lesson!&quot;)
 }</string>
 		<key>name</key>
 		<string>Introduction</string>
 	</dict>
 	<dict>
 		<key>code</key>
-		<string>console.log(new Date().getTime())</string>
+		<string></string>
 		<key>name</key>
-		<string>Introduction</string>
+		<string>Varying Variables</string>
+	</dict>
+	<dict>
+		<key>code</key>
+		<string></string>
+		<key>name</key>
+		<string>Interacting with your code</string>
+	</dict>
+	<dict>
+		<key>code</key>
+		<string></string>
+		<key>name</key>
+		<string>Quiz 1: This shouldn&apos;t be hard</string>
+	</dict>
+	<dict>
+		<key>code</key>
+		<string></string>
+		<key>name</key>
+		<string>If</string>
 	</dict>
 </array>
 </plist>
