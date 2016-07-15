@@ -108,7 +108,7 @@ function stepFive() {
 	})
 }
 
-function stepFive() {
+function stepSix() {
 	printArray([
 		&quot;Now try making a double variable &apos;b&apos; with a value of 3.5 and running the program.&quot;
 	], function() {
@@ -122,7 +122,7 @@ function stepFive() {
 	})
 }
 
-function stepFive() {
+function stepSeven() {
 	printArray([
 		&quot;Last, make a string variable &apos;c&apos; with a value of \&quot;Codie\&quot;. Don&apos;t forget the quotes!&quot;
 	], function() {
@@ -143,7 +143,7 @@ function stepFive() {
 		<key>code</key>
 		<string></string>
 		<key>name</key>
-		<string>Interacting with your code</string>
+		<string>Functions</string>
 	</dict>
 	<dict>
 		<key>code</key>
@@ -156,6 +156,12 @@ function stepFive() {
 		<string></string>
 		<key>name</key>
 		<string>If</string>
+	</dict>
+	<dict>
+		<key>code</key>
+		<string></string>
+		<key>name</key>
+		<string>Interacting with your code</string>
 	</dict>
 </array>
 </plist>

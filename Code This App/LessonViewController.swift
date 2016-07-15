@@ -15,6 +15,7 @@ class LessonViewController: UIViewController, UITextViewDelegate {
     @IBOutlet var codeView: UITextView!
     
     let LINE_DELAY = 1
+    let CHAR_DELAY = 0.05
     var lessonCode = ""
     
     let context = JSContext()
@@ -145,8 +146,7 @@ class LessonViewController: UIViewController, UITextViewDelegate {
             printingCompletion()
             return
         }
-        var delay = 0.0
-        delay += Double(LINE_DELAY)
+        var delay = Double(CHAR_DELAY) * Double(array[0].characters.count)
         printLine(array[0], delay: delay, completion: { (response) in
             var tempArray = array
             tempArray.removeFirst()
