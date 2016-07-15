@@ -14,7 +14,7 @@ printArray([
 	readline(&quot;Enter your name, and press &apos;Enter&apos;:&quot;, function(nameGiven) {
 		name = nameGiven
 		console.log(&quot;Nice to meet you, &quot; + name + &quot;!&quot;)
-		console.log(`Try typing &apos;console.log(&quot;${name}&quot;)&apos;, and then press the run button.`)
+		console.log(&quot;Try typing &apos;console.log(\&quot;&quot; + name + &quot;\&quot;)&apos;, and then press the run button.&quot;)
 		verifyOutput(name, &quot;Not quite! Did you run the correct code?&quot;, finishStepOne)
 	})
 
@@ -29,7 +29,113 @@ function finishStepOne() {
 	</dict>
 	<dict>
 		<key>code</key>
-		<string></string>
+		<string>printArray([
+	&quot;Congrats on completing your first lesson!&quot;,
+	&quot;Today, we&apos;re going to take a look at variables.&quot;,
+	&quot;They can be used to store anything, like words or numbers.&quot;,
+	&quot;Think of it like writing down a word on a piece of paper.&quot;,
+	&quot;Let&apos;s start by storing your name in a variable.&quot;,
+	&quot;To make a variable, we type the word &apos;var&apos;, the name of the variable, the equals sign, and the value we want to assign to it.&quot;,
+	&quot;[Tip] The keyword &apos;var&apos; shows that we want to create a new variable.&quot;,
+	&quot;Try typing &apos;var x = 5&apos; and running the program.&quot;
+], function() {
+	waitForExecution(function() {
+		return x == 5
+	}, function() {
+		console.log(&quot;Uh oh! Did you type &apos;var x=5&apos;?&quot;)
+	}, function() {
+		stepTwo()
+	})
+})
+
+function stepTwo() {
+	printArray([
+		&quot;Nothing happened!&quot;,
+		&quot;That&apos;s because we have to print out the value of the variable.&quot;,
+		&quot;Try adding console.log(x)&quot;
+	], function() {
+		verifyOutput(&quot;5&quot;, &quot;Did you try printing the value?&quot;, stepThree)
+	})
+}
+
+function stepThree() {
+	printArray([
+		&quot;There we go!&quot;,
+		&quot;So, we can set the value of x to 5. What happens if we try to set the value again?&quot;,
+		&quot;Because the variable already exists, we don&apos;t need the &apos;var&apos; keyword.&quot;,
+		&quot;Try setting the value of x to a different value by typing &apos;x = 7&apos;&quot;
+	], function() {
+		waitForExecution(function() {
+			return x == 7
+		}, function() {
+			console.log(&quot;Uh oh! Did you type &apos;x=7&apos;?&quot;)
+		}, function() {
+			stepFour()
+		})
+	})
+}
+
+function stepFour() {
+	printArray([
+		&quot;Awesome!&quot;,
+		&quot;You might remember from the introduction that before, we needed quotes around text.&quot;,
+		&quot;That&apos;s because there are different types of values:&quot;,
+		&quot;Integers, such as the value of x, can store any round number.&quot;,
+		&quot;When we want to store decimal values, we use a double. These are defined the same way as integers.&quot;,
+		&quot;To store text values, we always need to write the text in quotes.&quot;,
+		&quot;Text values are called Strings.&quot;,
+		&quot;We can also store a string in a variable: try typing &apos;var color =\&quot;Blue\&quot;&apos;.&quot;,
+		&quot;Then, print out the value of &apos;color&apos; by calling &apos;console.log(color)&apos;.&quot;
+	], function() {
+		verifyOutput(&quot;Blue&quot;, &quot;Did you try print the correct value?&quot;, stepFive)
+	})
+}
+
+function stepFive() {
+	printArray([
+		&quot;Wonderful, you now know how to store values in variables.&quot;,
+		&quot;To recap, we can assign different types to variables.&quot;,
+		&quot;We learned about Integers, Doubles, and Strings.&quot;,
+		&quot;Try making an integer variable &apos;a&apos; with the value of 10 and running the program.&quot;
+	], function() {
+		waitForExecution(function() {
+			return a == 10
+		}, function() {
+			console.log(&quot;Uh oh! Did you type &apos;var a=10&apos;?&quot;)
+		}, function() {
+			stepSix()
+		})
+	})
+}
+
+function stepFive() {
+	printArray([
+		&quot;Now try making a double variable &apos;b&apos; with a value of 3.5 and running the program.&quot;
+	], function() {
+		waitForExecution(function() {
+			return b == 3.5
+		}, function() {
+			console.log(&quot;Uh oh! Did you type &apos;var b=3.5&apos;?&quot;)
+		}, function() {
+			stepSeven()
+		})
+	})
+}
+
+function stepFive() {
+	printArray([
+		&quot;Last, make a string variable &apos;c&apos; with a value of \&quot;Codie\&quot;. Don&apos;t forget the quotes!&quot;
+	], function() {
+		waitForExecution(function() {
+			return c == &quot;Codie&quot;
+		}, function() {
+			console.log(&quot;Uh oh! Did you type &apos;var c=\&quot;Codie\&quot;&apos;?&quot;)
+		}, function() {
+			console.log(&quot;Congratulations! You have completed this lesson. √&quot;)
+		})
+	})
+}
+</string>
 		<key>name</key>
 		<string>Varying Variables</string>
 	</dict>

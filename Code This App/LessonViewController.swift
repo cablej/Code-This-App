@@ -32,6 +32,7 @@ class LessonViewController: UIViewController, UITextViewDelegate {
     enum EVENT_TYPES: String {
         case READ_INPUT = "ReadInput"
         case VERIFY_OUTPUT = "VerifyOutput"
+        case WAIT_EXECUTION = "WaitExecution"
     }
     
     var dataToStore = [
@@ -112,6 +113,19 @@ class LessonViewController: UIViewController, UITextViewDelegate {
         }
         context.setObject(unsafeBitCast(verifyOutput, AnyObject.self), forKeyedSubscript: "verifyOutput")
         
+        let waitForExecution: @convention(block) (JSValue, JSValue, JSValue) -> Void = { (check, error, callback) in
+            self.actionEventType = EVENT_TYPES.WAIT_EXECUTION.rawValue
+            self.actionEvent = { () in
+                if check.callWithArguments([]).toBool() {
+                    callback.callWithArguments([])
+                } else {
+                    error.callWithArguments([])
+                    self.actionEventType = EVENT_TYPES.WAIT_EXECUTION.rawValue
+                }
+            }
+        }
+        context.setObject(unsafeBitCast(waitForExecution, AnyObject.self), forKeyedSubscript: "waitForExecution")
+        
         context.exceptionHandler = { (context, exception) in
             self.console.text.appendContentsOf("[Error]: \(exception)\n")
         }
@@ -120,6 +134,10 @@ class LessonViewController: UIViewController, UITextViewDelegate {
     
     @IBAction func onRunButtonTapped(sender: AnyObject) {
         context.evaluateScript(codeView.text)
+        if actionEventType == EVENT_TYPES.WAIT_EXECUTION.rawValue {
+            actionEventType = ""
+            actionEvent()
+        }
     }
     
     func printArray(array: [String], params: Dictionary<String, AnyObject>? = nil) {
