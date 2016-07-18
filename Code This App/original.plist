@@ -141,7 +141,75 @@ function stepSeven() {
 	</dict>
 	<dict>
 		<key>code</key>
-		<string></string>
+		<string>printArray([
+	&quot;Welcome back!&quot;,
+	&quot;Today&apos;s topic is: Functions.&quot;,
+	&quot;Imagine what secrets this lesson holds...&quot;,
+	&quot;Up until now, all of our code has run straight through.&quot;,
+	&quot;What if we want to store code for later, or repeat the same code?&quot;,
+	&quot;We can use functions to store blocks of code.&quot;,
+	&quot;A function works like this:&quot;,
+	&quot;Start by typing the word function, followed its name and an open parenthesis.&quot;,
+	&quot;Then, we can include the arguments of the function, which are variables we can send to the function.&quot;,
+	&quot;Finally, we have a closing parenthesis and two curley brackets, where we put the code in.&quot;,
+	&quot;function addFive(number) {&quot;,
+	&quot;console.log(number + 5)&quot;,
+	&quot;}&quot;,
+	&quot;Once you have written a function, you can call it like you did console.log:&quot;,
+	&quot;addFive(10)&quot;,
+	&quot;Try typing in the function and calling it! I wonder what value will be printed...&quot;
+], function() {
+	verifyOutput(&quot;15&quot;, &quot;Hmm, not quite correct.&quot;, stepTwo)
+})
+
+function stepTwo() {
+	printArray([
+		&quot;Awesome! You&apos;ve written your first function.&quot;,
+		&quot;What if instead, you want to get a value from a function?&quot;,
+		&quot;We can pass back values in a function by using the &apos;return&apos; keyword.&quot;,
+		&quot;Then, when we call the function, we can use its return value.&quot;,
+		&quot;Try it out! Replace &apos;console.log(number + 5)&apos; with &apos;return number + 5&apos;&quot;,
+		&quot;Then, let&apos;s make a variable &apos;x&apos; with the value plusFive(10):&quot;,
+		&quot;var x = plusFive(7)&quot;,
+		&quot;Finally, log the value of &apos;x&apos;.&quot;
+	], function() {
+		verifyOutput(&quot;12&quot;, &quot;Did you try printing the value?&quot;, stepThree)
+	})
+}
+
+function stepThree() {
+	printArray([
+		&quot;Nice going.&quot;,
+		&quot;As you saw, there are four main components of a function:&quot;,
+		&quot;First, the function&apos;s name, which is used to call the function.&quot;,
+		&quot;Next, the function&apos;s arguments, which allow us to pass values to the function.&quot;,
+		&quot;Then, the function&apos;s code, of course, which is executed when the function is called.&quot;,
+		&quot;Finally, the function&apos;s return value, which is used to pass values back to the caller of the function.&quot;,
+		&quot;Putting this all together, we have the form that we saw before:&quot;,
+		&quot;function [name](argument1, argument2 ... (optional)) {&quot;,
+		&quot;[code]&quot;,
+		&quot;return [value] (optional)&quot;,
+		&quot;}&quot;,
+		&quot;Let&apos;s take a look at a function you&apos;ve been using all along: console.log&quot;,
+		&quot;console.log accepts one argument, the text to be logged. It&apos;s name is &apos;console.log&apos;&quot;,
+		&quot;In its code, it outputs the text to the console.&quot;,
+		&quot;It does not return a value.&quot;,
+		&quot;Try making a function called myLog that takes two separate values and logs them both, calling separate console.log functions.&quot;,
+		&quot;Then, call the function: myLog(\&quot;Hello\&quot;, \&quot;Codie\&quot;)&quot;
+	], function() {
+		verifyOutput(&quot;Hello\nCodie&quot;, &quot;Did you pass &apos;Hello&apos; and &apos;Codie&apos;?&quot;, stepFour)
+	})
+}
+
+function stepFour() {
+	printArray([
+		&quot;That&apos;s a wrap for today!&quot;,
+		&quot;See you during the next lesson.&quot;
+	], function() {
+
+	})
+}
+</string>
 		<key>name</key>
 		<string>Functions</string>
 	</dict>
@@ -149,19 +217,19 @@ function stepSeven() {
 		<key>code</key>
 		<string></string>
 		<key>name</key>
-		<string>Quiz 1: This shouldn&apos;t be hard</string>
+		<string>If and Booleans</string>
 	</dict>
 	<dict>
 		<key>code</key>
 		<string></string>
 		<key>name</key>
-		<string>If</string>
+		<string>Variable Scopes</string>
 	</dict>
 	<dict>
 		<key>code</key>
 		<string></string>
 		<key>name</key>
-		<string>Interacting with your code</string>
+		<string>For and While</string>
 	</dict>
 </array>
 </plist>
